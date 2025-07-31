@@ -21,6 +21,12 @@ public class SpawnManager : MonoBehaviour
         if (spawnTimer <= 0)
         {
             Vector2 enemyPos = new Vector2(Random.Range(-28f, 8f),  Random.Range(8f, 20f));
+            float distanceToPlayer = Vector2.Distance(enemyPos, PlayerController.instance.transform.position);
+            while (Mathf.Abs(distanceToPlayer) <= 2)
+            {
+                enemyPos = new Vector2(Random.Range(-28f, 8f),  Random.Range(8f, 20f));
+                distanceToPlayer = Vector2.Distance(enemyPos, PlayerController.instance.transform.position);
+            }
             Instantiate(enemyPrefab, enemyPos, Quaternion.identity);
             spawnTimer = spawnRate;
         }
