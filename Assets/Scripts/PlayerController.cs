@@ -37,5 +37,25 @@ public class PlayerController : MonoBehaviour
         Vector2 inputDir = new Vector2(horizontalInput, verticalInput).normalized; // .normalized makes the vector have a magnitude of 1! it is important!
 
         rb.velocity = inputDir * speed;
+        
+        RotateToMouse();
+    }
+    
+    public void RotateToMouse()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
+    
+        if (Camera.main.orthographic)
+        {
+            Vector2 direction = (mousePos - transform.position).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+        else
+        {
+            mousePos.y = transform.position.y;
+            transform.LookAt(mousePos);
+        }
     }
 }
