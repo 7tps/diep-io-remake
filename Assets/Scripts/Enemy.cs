@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     
     public Rigidbody2D rb;
     public float speed = 2f;
+
+    public GameObject lootPrefab;
     
     // Start is called before the first frame update
     void Start()
@@ -37,6 +39,11 @@ public class Enemy : MonoBehaviour
         {
             GetComponent<Health>().TakeDamage(other.gameObject.GetComponent<Projectile>().damage);
             Destroy(other.gameObject);
+
+            if (GetComponent<Health>().currentHealth <= 0)
+            {
+                Instantiate(lootPrefab, transform.position, Quaternion.identity);
+            }
         }
     }
 }

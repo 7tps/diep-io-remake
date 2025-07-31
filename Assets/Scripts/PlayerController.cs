@@ -7,9 +7,16 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
 
+    [Header("Player Info")]
     public float speed = 5f;
     public Rigidbody2D rb;
+    public Weapon weapon;
 
+    [Header("Upgrades")] 
+    public int points = 0;
+    public int maxPoints = 10;
+    public int level = 1;
+    
     void Awake()
     {
         if (instance == null)
@@ -56,6 +63,21 @@ public class PlayerController : MonoBehaviour
         {
             mousePos.y = transform.position.y;
             transform.LookAt(mousePos);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Pickup"))
+        {
+            Destroy(other.gameObject);
+            points++;
+            if (points >= maxPoints)
+            {
+                points = 0;
+                level++;
+                weapon.fireRate /= 1.5f;
+            }
         }
     }
 }
